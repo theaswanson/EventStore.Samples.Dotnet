@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AccountBalance", "AccountBa
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PersistentSubscription", "PersistentSubscription\PersistentSubscription.csproj", "{F00DBEC7-2B66-4553-BC67-590044F6847C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DocsExample", "DocsExample\DocsExample.csproj", "{22072782-69A2-4A30-8C0C-538A54327E78}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{F00DBEC7-2B66-4553-BC67-590044F6847C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F00DBEC7-2B66-4553-BC67-590044F6847C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F00DBEC7-2B66-4553-BC67-590044F6847C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{22072782-69A2-4A30-8C0C-538A54327E78}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{22072782-69A2-4A30-8C0C-538A54327E78}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{22072782-69A2-4A30-8C0C-538A54327E78}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{22072782-69A2-4A30-8C0C-538A54327E78}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
