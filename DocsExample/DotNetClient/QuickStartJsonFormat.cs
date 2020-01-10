@@ -6,11 +6,12 @@ namespace DocsExample
 {
     public class QuickStartJsonFormat
     {
-        public static void Method(){
+        public static void Main()
+        {
             var conn = EventStoreConnection.Create(new Uri("tcp://admin:changeit@localhost:1113"));
             conn.ConnectAsync().Wait();
 
-            var data = Encoding.UTF8.GetBytes("{ \"a\":\"2\"}");
+            var data = Encoding.UTF8.GetBytes("{\"a\":\"2\"}");
             var metadata = Encoding.UTF8.GetBytes("{}");
             var evt = new EventData(Guid.NewGuid(), "testEvent", true, data, metadata);
 

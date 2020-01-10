@@ -6,7 +6,8 @@ namespace DocsExample
 {
     public class QuickStartPlainFormat
     {
-        public static void Method(){
+        public static void Main()
+        {
             var conn = EventStoreConnection.Create(new Uri("tcp://admin:changeit@localhost:1113"));
             conn.ConnectAsync().Wait();
 
