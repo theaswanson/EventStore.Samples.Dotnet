@@ -7,7 +7,6 @@ namespace DocsExample
 {
     public class WritingListEvents
     {
-        private static readonly IEventStoreConnection conn = null;
 
         private static EventData CreateSample(int i)
         {
@@ -18,8 +17,11 @@ namespace DocsExample
             return eventPayload;
         }
 
-        public static void Method()
+        public static void Main()
         {
+            var conn = EventStoreConnection.Create(new Uri("tcp://admin:changeit@localhost:1113"));
+            conn.ConnectAsync().Wait();
+
             conn.AppendToStreamAsync("newstream", ExpectedVersion.Any, new[] { CreateSample(1), CreateSample(2), CreateSample(3) }).Wait();
         }
     }

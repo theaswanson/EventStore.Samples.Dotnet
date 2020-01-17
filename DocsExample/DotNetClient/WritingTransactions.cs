@@ -7,8 +7,6 @@ namespace DocsExample
 {
     public class WritingTransactions
     {
-        private static readonly IEventStoreConnection conn = null;
-
         private static EventData CreateSample(int i)
         {
             var sampleObject = new { a = i };
@@ -18,8 +16,11 @@ namespace DocsExample
             return eventPayload;
         }
 
-        public static void Method()
+        public static void Main()
         {
+            var conn = EventStoreConnection.Create(new Uri("tcp://admin:changeit@localhost:1113"));
+            conn.ConnectAsync().Wait();
+
             using (var transaction = conn.StartTransactionAsync("newstream", ExpectedVersion.Any).Result)
             {
                 transaction.WriteAsync(CreateSample(1)).Wait();

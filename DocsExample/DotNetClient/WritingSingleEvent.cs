@@ -7,10 +7,11 @@ namespace DocsExample
 {
     public class WritingSingleEvent
     {
-        private static readonly IEventStoreConnection conn = null;
-
-        public static void Method()
+        public static void Main()
         {
+            var conn = EventStoreConnection.Create(new Uri("tcp://admin:changeit@localhost:1113"));
+            conn.ConnectAsync().Wait();
+
             var sampleObject = new { a = 2 };
             var data = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(sampleObject));
             var metadata = Encoding.UTF8.GetBytes("{}");
