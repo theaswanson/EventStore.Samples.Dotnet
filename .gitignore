@@ -95,3 +95,6 @@ test_results
 
 # Mac
 .DS_Store
+
+# Ignore Visual Studio Code folder 
+.vs
