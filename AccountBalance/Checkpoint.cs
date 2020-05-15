@@ -11,7 +11,7 @@ namespace AccountBalance
     {
         public int? ID { get; private set; }
         public int Value { get; private set; }
-        string _file;
+        readonly string _file;
         public Checkpoint(string file)
         {
             _file = file;

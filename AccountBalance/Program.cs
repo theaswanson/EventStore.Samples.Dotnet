@@ -45,31 +45,36 @@ namespace AccountBalance
 
         static void Main()
         {
-            Console.WriteLine("Loading EventStore");
+            Console.WriteLine("Loading EventStore...");
 
             EventStoreLoader.SetupEventStore();
-            //Create a private copy of the Checkpoint file to support running multiple instances of the app in the same folder
-            var privateCopy = Guid.NewGuid() + ".csv";
-            if (File.Exists(ReadModelFile))
-                File.Copy(ReadModelFile, privateCopy);
+            string privateCopy = CopyCheckpoint();
 
             _consoleView = new ConsoleView();
-
             _balanceRm = new BalanceReadModel(_consoleView, StreamName, privateCopy);
-
             _sessionStatsRm = new SessionStatsReadModel(_consoleView);
-
             _controller = new Controller(_consoleView, _balanceRm, StreamName, privateCopy);
 
             _controller.StartCommandLoop();
 
-            //if we saved a checkpoint copy it back
+            UpdateCheckpoint(privateCopy);
+        }
+
+        private static void UpdateCheckpoint(string privateCopy)
+        {
             if (File.Exists(privateCopy))
             {
                 File.Copy(privateCopy, ReadModelFile, true);
                 File.Delete(privateCopy);
             }
+        }
 
+        private static string CopyCheckpoint()
+        {
+            var privateCopy = Guid.NewGuid() + ".csv";
+            if (File.Exists(ReadModelFile))
+                File.Copy(ReadModelFile, privateCopy);
+            return privateCopy;
         }
     }
 }

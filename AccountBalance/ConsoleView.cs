@@ -30,7 +30,6 @@ namespace AccountBalance
 
         public void Redraw()
         {
-
             Console.Clear();
             Console.WriteLine("Available Commands:");
             Console.WriteLine("\t credit #");
