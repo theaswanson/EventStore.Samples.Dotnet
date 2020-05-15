@@ -55,6 +55,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BalanceReadModel.cs" />
+    <Compile Include="Checkpoint.cs" />
     <Compile Include="ConsoleView.cs" />
     <Compile Include="Controller.cs" />
     <Compile Include="EventStoreLoader.cs" />

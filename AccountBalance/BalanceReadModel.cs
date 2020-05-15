@@ -13,54 +13,29 @@ namespace AccountBalance
     /// </summary>
     public class BalanceReadModel
     {
-        private int _total;
-        public int? Checkpoint { get; private set; }
-        private readonly string _streamName;
-        private readonly string _localFile;
-        private readonly ConsoleView _view;
-
+        public int? Checkpoint { get { return _checkpoint.ID; } }
+        readonly string _streamName;
+        readonly string _localFile;
+        readonly ConsoleView _view;
+        Checkpoint _checkpoint;
 
         public BalanceReadModel(ConsoleView view, string streamName, string localFile)
         {
             _view = view;
             _streamName = streamName;
             _localFile = localFile;
-            int? checkpoint = null;
-            //See if we have a local checkpoint file
-            if (File.Exists(_localFile))
-            {
-                try
-                {
-                    var text = File.ReadAllText(_localFile);
-                    var tokens = text.Split(',');
-                    if (tokens.Length == 2)
-                    {
-                        checkpoint = int.Parse(tokens[0]);
-                        _total = int.Parse(tokens[1]);
-                    }
-                }
-                catch
-                {
-                    //error loading file
-                    checkpoint = null;
-                    _total = 0;
-                }
-            }
+            _checkpoint = new Checkpoint(localFile);
 
-
-            _view.Total = _total;
-            //n.b. if there is no checkpoint we use null
-            Checkpoint = checkpoint;
+            _view.Total = _checkpoint.Value;
             Subscribe();
-            
         }
 
         private void Subscribe()
         {
-            EventStoreLoader.Connection.SubscribeToStreamFrom(_streamName, Checkpoint, false, GotEvent, subscriptionDropped: Dropped  );
+            EventStoreLoader.Connection.SubscribeToStreamFrom(_streamName, Checkpoint, false, GotEvent, subscriptionDropped: Dropped);
         }
 
-        private void Dropped(EventStoreCatchUpSubscription sub,SubscriptionDropReason reason,Exception ex)
+        private void Dropped(EventStoreCatchUpSubscription sub, SubscriptionDropReason reason, Exception ex)
         {
             //Reconnect if we drop
             //TODO: check the reason and handle it appropriately
@@ -73,7 +48,7 @@ namespace AccountBalance
             try
             {
                 //create local copies of state variables
-                var total = _total;
+                var total = _checkpoint.Value;
                 var checkpoint = evt.Event.EventNumber;
 
                 var amount = (string)JObject.Parse(Encoding.UTF8.GetString(evt.Event.Data))["amount"];
@@ -88,17 +63,14 @@ namespace AccountBalance
                     default:
                         throw new Exception("Unknown Event Type");
                 }
-                File.WriteAllText(_localFile, checkpoint + "," + total);
-                //Update the common state after commit to disk
-                _total = total;
-                Checkpoint = checkpoint;
+                _checkpoint.Save(checkpoint, total);
             }
             catch (Exception ex)
             {
                 _view.ErrorMsg = "Event Exception: " + ex.Message;
             }
             //repaint screen
-            _view.Total = _total;
+            _view.Total = _checkpoint.Value;
         }
     }
 }
